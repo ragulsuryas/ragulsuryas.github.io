@@ -1,4 +1,4 @@
-name: Deploy Hugo site to GitHub Pages
+name: Deploy Hugo Site to GitHub Pages
 
 on:
   push:
@@ -7,31 +7,39 @@ on:
 
 permissions:
   contents: write
+  pages: write
 
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # Checkout the repository
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          submodules: true
+          submodules: true  # Fetch Hugo themes if used as submodules
+          fetch-depth: 0    # Fetch all history for Git info
 
+      # Set up Hugo
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+        uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: 'latest'
-          extended: true
+          hugo-version: 'latest'  # Or specify a version, e.g., '0.134.2'
+          extended: true          # Use extended Hugo for Sass/SCSS if needed
 
-      - name: Build
-        run: hugo --cleanDestinationDir
+      # Build the Hugo site
+      - name: Build Hugo
+        run: hugo --minify --destination ./_site --verbose --ignoreFuture
+        env:
+          HUGO_ENV: production
 
-      - name: Disable Jekyll
-        run: touch ./public/.nojekyll
+      # Create .nojekyll file
+      - name: Create .nojekyll
+        run: touch ./_site/.nojekyll
 
+      # Deploy to GitHub Pages
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: actions/deploy-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-          publish_branch: gh-pages
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifact: _site
