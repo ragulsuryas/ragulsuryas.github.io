@@ -1,0 +1,38 @@
+baseURL: "https://ragulsuryas.github.io/"
+languageCode: en-us
+title: "Blog"
+theme: "PaperMod"
+canonifyURLs: true
+relativeURLs: false
+
+enableRobotsTXT: true
+
+params:
+  env: production
+  defaultTheme: auto
+  disableThemeToggle: false
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+
+  homeInfoParams:
+    Title: "Ragul Surya S"
+    Content: "I like training neural networks and exploring space science."
+
+  socialIcons:
+    - name: "github"
+      url: "https://github.com/ragulsuryas"
+    - name: "twitter"
+      url: "https://twitter.com/ragulsuryas"
+
+menu:
+  main:
+    - identifier: "posts"
+      name: "Posts"
+      url: "/posts/"
+      weight: 10
+    - identifier: "about"
+      name: "About"
+      url: "/about/"
+      weight: 20
